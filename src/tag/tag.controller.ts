@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { TagEntity } from './tag.entity';
 
 @ApiTags('Tags')
 @Controller('tags')
@@ -17,7 +18,7 @@ export class TagController {
     status: 500,
     description: 'Internal server error',
   })
-  findAll(): string[] {
-    return this.tagService.findAll();
+  async findAll(): Promise<TagEntity[]> {
+    return await this.tagService.findAll();
   }
 }
