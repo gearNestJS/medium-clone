@@ -1,8 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, ResponseUserDto } from './dto';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserMapper } from './user.mapper';
+import { ResponseUserInterface } from './interface';
 
 @ApiTags('Users')
 @Controller()
@@ -16,8 +17,10 @@ export class UserController {
   @ApiOperation({ summary: 'Create new user' })
   async createUser(
     @Body('user') createUserDto: CreateUserDto,
-  ): Promise<CreateUserDto> {
-    const user = await this.userService.createUser(createUserDto);
-    return this.userMapper.mapResponseUser(user);
+  ): Promise<ResponseUserInterface> {
+    const responseUserDto: ResponseUserDto = await this.userService.createUser(
+      createUserDto,
+    );
+    return this.userMapper.mapResponseUser(responseUserDto);
   }
 }
