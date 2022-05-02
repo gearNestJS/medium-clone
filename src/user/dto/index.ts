@@ -1,1 +1,1 @@
-export { RequestCreateUserDto } from './request-create-user.dto';
+export { CreateUserDto } from './create-user.dto';
