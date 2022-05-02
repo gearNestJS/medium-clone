@@ -1,1 +1,1 @@
-export { SALT } from './user.constants';
+export { SALT, PRIVATE_KEY } from './user.constants';

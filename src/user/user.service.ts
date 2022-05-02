@@ -17,7 +17,7 @@ export class UserService {
     const user: CreateUserDto = await this.userMapper.mapRequestUser(
       createUserDto,
     );
-    const savedUser = this.userRepository.save(user);
+    const savedUser: ResponseUserDto = await this.userRepository.save(user);
     if (!savedUser) {
       new HttpException('error', HttpStatus.NOT_IMPLEMENTED);
     }

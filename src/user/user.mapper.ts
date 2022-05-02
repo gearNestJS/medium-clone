@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 import { CreateUserDto, ResponseUserDto } from './dto';
-import { SALT } from './constants';
+import { PRIVATE_KEY, SALT } from './constants';
 import { ResponseUserInterface } from './interface';
 
 export class UserMapper {
@@ -9,9 +10,11 @@ export class UserMapper {
   ): ResponseUserInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id, password, ...rest } = responseUserDto;
+    const { username, email } = rest;
+    const token: string = sign({ id, username, email }, PRIVATE_KEY);
 
     return {
-      user: { ...rest },
+      user: { ...rest, token },
     };
   }
 
