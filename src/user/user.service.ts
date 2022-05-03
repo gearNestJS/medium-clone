@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto, ResponseUserDto } from './dto';
+import { CreateUserDto } from './dto';
 import { UserMapper } from './user.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
@@ -13,11 +13,11 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async createUser(createUserDto: CreateUserDto): Promise<ResponseUserDto> {
+  async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const user: CreateUserDto = await this.userMapper.mapRequestUser(
       createUserDto,
     );
-    const savedUser: ResponseUserDto = await this.userRepository.save(user);
+    const savedUser: UserEntity = await this.userRepository.save(user);
     if (!savedUser) {
       new HttpException('error', HttpStatus.NOT_IMPLEMENTED);
     }
