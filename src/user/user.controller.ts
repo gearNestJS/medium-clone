@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -16,6 +22,7 @@ export class UserController {
 
   @Post('users')
   @ApiOperation({ summary: 'Create new user' })
+  @UsePipes(new ValidationPipe())
   async createUser(
     @Body('user') createUserDto: CreateUserDto,
   ): Promise<ResponseUserInterface> {
