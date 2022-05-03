@@ -6,9 +6,9 @@ import { ResponseUserInterface } from './interface';
 import { UserEntity } from './entity/user.entity';
 
 export class UserMapper {
-  public mapResponseUser(responseUserDto: UserEntity): ResponseUserInterface {
+  public mapResponseUser(createUser: UserEntity): ResponseUserInterface {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { id, password, ...rest } = responseUserDto;
+    const { id, password, ...rest } = createUser;
     const { username, email } = rest;
     const token: string = sign({ id, username, email }, PRIVATE_KEY);
 
@@ -24,5 +24,12 @@ export class UserMapper {
       ...user,
       password: await hash(password, SALT),
     };
+  }
+
+  public async mapResponseUserPassword(
+    plainPassword: string,
+    hashPassword: string,
+  ): Promise<boolean> {
+    return await compare(plainPassword, hashPassword);
   }
 }

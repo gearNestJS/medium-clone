@@ -5,7 +5,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, LoginUserDto } from './dto';
 import { UserService } from './user.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UserMapper } from './user.mapper';
@@ -21,14 +21,26 @@ export class UserController {
   ) {}
 
   @Post('users')
-  @ApiOperation({ summary: 'Create new user' })
   @UsePipes(new ValidationPipe())
+  @ApiOperation({ summary: 'Create new user' })
   async createUser(
     @Body('user') createUserDto: CreateUserDto,
   ): Promise<ResponseUserInterface> {
-    const responseUserDto: UserEntity = await this.userService.createUser(
+    const createUser: UserEntity = await this.userService.createUser(
       createUserDto,
     );
-    return this.userMapper.mapResponseUser(responseUserDto);
+    return this.userMapper.mapResponseUser(createUser);
+  }
+
+  @Post('users/login')
+  @UsePipes(new ValidationPipe())
+  @ApiOperation({ summary: 'Login user' })
+  async loginUser(
+    @Body('user') loginUserDto: LoginUserDto,
+  ): Promise<ResponseUserInterface> {
+    const loginUser: UserEntity = await this.userService.loginUser(
+      loginUserDto,
+    );
+    return this.userMapper.mapResponseUser(loginUser);
   }
 }

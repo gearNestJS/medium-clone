@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, LoginUserDto } from './dto';
 import { UserMapper } from './user.mapper';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
@@ -33,5 +33,34 @@ export class UserService {
       createUserDto,
     );
     return await this.userRepository.save(user);
+  }
+
+  async loginUser(loginUserDto: LoginUserDto): Promise<UserEntity> {
+    const { email, password } = loginUserDto;
+    const findUser: UserEntity = await this.userRepository.findOne({
+      email,
+    });
+
+    if (!findUser) {
+      throw new HttpException(
+        `User with email ${email} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    const isPasswordEqual: boolean =
+      await this.userMapper.mapResponseUserPassword(
+        password,
+        findUser.password,
+      );
+
+    if (!isPasswordEqual) {
+      throw new HttpException(
+        `User with password ${password} not found`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return findUser;
   }
 }
