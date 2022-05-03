@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UsePipes,
   ValidationPipe,
@@ -42,5 +43,10 @@ export class UserController {
       loginUserDto,
     );
     return this.userMapper.mapResponseUser(loginUser);
+  }
+
+  @Get('user')
+  async currentUser(): Promise<ResponseUserInterface> {
+    return '' as any;
   }
 }
