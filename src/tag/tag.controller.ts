@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
 import { TagService } from './tag.service';
+import { TagEntity } from './tag.entity';
 
 @Controller('tags')
 export class TagController {
-  constructor(private readonly tagService: TagService) { }
+  constructor(private readonly tagService: TagService) {}
 
   @Get()
-  getAll(): string[] {
-    return this.tagService.getAll();
+  async getAll(): Promise<{ tags: string[] }> {
+    const tags: TagEntity[] = await this.tagService.getAll();
+    return {
+      tags: tags.map((tag: TagEntity) => tag.name),
+    };
   }
 }

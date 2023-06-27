@@ -14,11 +14,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'mediumclone',
       password: 'xyzzy',
       database: 'mediumclone',
-      entities: [],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
