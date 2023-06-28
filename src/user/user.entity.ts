@@ -1,6 +1,8 @@
 import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { hash } from 'bcrypt';
 
+import { SALT } from './user.constant';
+
 @Entity({ name: 'users' })
 export class UserEntity {
   @PrimaryGeneratedColumn()
@@ -23,6 +25,6 @@ export class UserEntity {
 
   @BeforeInsert()
   async hashPassword() {
-    this.password = await hash(this.password, 10);
+    this.password = await hash(this.password, SALT);
   }
 }
